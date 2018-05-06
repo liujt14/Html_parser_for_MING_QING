@@ -3,7 +3,7 @@
 [明實錄、朝鮮王朝實錄、清實錄資料庫](http://hanchi.ihp.sinica.edu.tw/mql/login.html)
 ## Steps to use this tool
 ### 1.install python and third-party libs(bs4, xlwt)
-if you are not familiar with python, recommend download [Anaconda](https://www.anaconda.com/download/) and install Python 3.6 version. So the third-party libs will be included.
+if you are not familiar with python, recommend download [Anaconda](https://www.anaconda.com/download/) and install Python 3.6 version. The third-party libs will be included.
 ### 2.Save the website page as *html* file.
 Right click the website and choose **Save as...**
 Save to one emopty folder and **DO NOT** change the name.
