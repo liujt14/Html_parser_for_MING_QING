@@ -31,3 +31,5 @@ When there is more than one list of words. for example, search ‘陝西’run F
 The matches varible in Html_parser.py will looks like this: 
 
 `matches = [['陜西', '陝西'],['番僧']]`
+
+if you need photo version, see **User tutorial** file
