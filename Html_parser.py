@@ -115,7 +115,10 @@ while k < font_numbers:
                     heads_match_results = [m.start() for m in re.finditer('／', heads)]
                     heads_head.append(heads[0:heads_match_results[2]])
                     heads_contents.append(heads[(heads_match_results[2]+1):])
-                    contents.append(div.get_text())
+                    div_get_text = div.get_text()
+                    if div_get_text[0] == '○' or div_get_text[0] == '△':
+                        div_get_text = div_get_text.replace(div_get_text[0],'')
+                    contents.append(div_get_text)
                     K_number.append(k)
 
                 else:
