@@ -6,11 +6,14 @@
 if you are not familiar with python, recommend download [Anaconda](https://www.anaconda.com/download/) and install Python 3.6 version. The third-party libs will be included.
 ### 2.Save the website page as *html* file.
 Right click the website and choose **Save as...**
+![Save as html](https://ibb.co/h29SKS)
 Save to one emopty folder and **DO NOT** change the name.
+![Do not change the name](https://ibb.co/gJFCm7)
 Copy the python files –Html_parser.py and Find_all_match.py  to this folder
 ### 3.Run python file
 > After installed Anaconda, you can launch Spyder, and use it to open python files.
 
+![Anaconda - launch spyder](https://ibb.co/msAOtn)
 There are two .py files, First run Find_all_match.py, it will print all found words that we will use later.The list printed is the different types of same word.
 for example:
 
@@ -32,4 +35,7 @@ The matches varible in Html_parser.py will looks like this:
 
 `matches = [['陜西', '陝西'],['番僧']]`
 
-if you need photo version, see **User tutorial** file
+![example](https://ibb.co/cidhm7)
+![Result](https://ibb.co/iVCsm7)
+
+if you need more details, see **User tutorial** file
