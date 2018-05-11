@@ -9,18 +9,7 @@ contents = []
 heads_head = []
 heads_contents = []
 K_number = []
-matches = [['朵顏衞', '朶顏衞','朵顏衛','朶顏衛']]
-
-
-def remove_table_and_merge_div(font):
-    if font.get_text() == "\n":
-        div = font.find_parent('div')
-        table = div.find_previous_sibling('table')
-        table.decompose()
-        current_div_contents = div.get_text()
-        previous_div = div.find_previous_sibling('div')
-        previous_div.append(current_div_contents)
-        div.decompose()
+matches = [['朵顏衛', '朶顏衞', '朶顏衛',  '朵顏衞']]
 
 
 def remove_tables_between_divs(table):
@@ -29,20 +18,21 @@ def remove_tables_between_divs(table):
     if previous_div is None or next_div is None:
         table.decompose()
     else:
-        next_div_contents = next_div.contents
-        contents_list = []
-        for content in next_div_contents:
-            contents_list.append(content)
-        for content in contents_list:
-            previous_div.append(content)
-        table.decompose()
-        next_div.decompose()
+        previous_div_text = previous_div.get_text()
+        next_div_text = next_div.get_text()
+        if previous_div_text[0] == '○' or previous_div_text[0] == '△':
+            if next_div_text[0] == '○' or next_div_text[0] == '△':
+                table.decompose()
+            else:
+                next_div_contents = next_div.contents
+                contents_list = []
+                for content in next_div_contents:
+                    contents_list.append(content)
+                for content in contents_list:
+                    previous_div.append(content)
+                table.decompose()
+                next_div.decompose()
 
-
-fonts = soup.find_all('font', {'class': "hit"})
-for font in fonts:
-    if font.string is None:
-        remove_table_and_merge_div(font)
 tables = soup.find_all('table', {'class': "page2"})
 for table in tables:
     remove_tables_between_divs(table)
@@ -81,9 +71,6 @@ while k < font_numbers:
     if div is None:
         break
     div_string = div.get_text(strip=True)
-    # match1_results = [m.start() for m in re.finditer(match1, div_string)]
-    # match1_another_results = [m.start() for m in re.finditer(match1_another, div_string)]
-    # match2_results = [m.start() for m in re.finditer(match2, div_string)]
     match_result = True
 
     for match in matches:
@@ -116,8 +103,12 @@ while k < font_numbers:
                     heads_head.append(heads[0:heads_match_results[2]])
                     heads_contents.append(heads[(heads_match_results[2]+1):])
                     div_get_text = div.get_text()
-                    if div_get_text[0] == '○' or div_get_text[0] == '△':
-                        div_get_text = div_get_text.replace(div_get_text[0],'')
+                    div_text_quanquan = [m.start() for m in re.finditer('○', div_get_text)]
+                    div_text_sanjiao = [m.start() for m in re.finditer('△', div_get_text)]
+                    if len(div_text_quanquan):
+                        div_get_text = div_get_text.replace('○', '')
+                    elif len(div_text_sanjiao):
+                        div_get_text = div_get_text.replace('△', '')
                     contents.append(div_get_text)
                     K_number.append(k)
 
