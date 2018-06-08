@@ -1,3 +1,8 @@
+# this time i need to add 幹支年在contents開頭位置
+# 思路爲:找到前面的div如果沒有,就返回空字符串
+# 如果有,直至找到第一個div爲止,將第一個div的內容取出. 如果第一個是圓圈或者三角,則替換爲空白,並將替換後的text的1-2位取出,返回
+# bug1: 宣德九年三月戊寅朔 如果第一個幹支年不是['甲乙丙丁戊己庚辛壬癸']之中的一個,則向下搜索'朔'朔
+# 如果找到了,則取前面的兩個,如果沒有找到,則返回''.
 from bs4 import BeautifulSoup
 import xlwt
 import codecs
@@ -5,13 +10,12 @@ import re
 
 page = codecs.open("./明實錄、朝鮮王朝實錄、清實錄資料庫合作建置計畫.html", 'r', 'utf-8')
 soup = BeautifulSoup(page, "lxml")
-page.close()
 contents = []
 heads_all_contents = []
 heads_head = []
 heads_contents = []
 K_number = []
-matches = [['四川'], ['土官']]
+matches = [['雲南'], ['土官']]
 
 
 def remove_tables_between_divs(table):
@@ -62,6 +66,43 @@ divs = soup.find_all('div')
 for div in divs:
     merge_div_to_one(div)
 
+
+# 返回幹支年
+def find_old_year(cu_div):
+    old_year = ''
+    previous_d = cu_div.find_previous_sibling('div')
+    if previous_d is None:
+        return old_year
+    else:
+        while previous_d is not None:
+            pre_pre_div = previous_d.find_previous_sibling('div')
+            if pre_pre_div is None:
+                pre_div_get_text = previous_d.get_text()
+                pre_div_text_quanquan = [m.start() for m in re.finditer('○', pre_div_get_text)]
+                pre_div_text_sanjiao = [m.start() for m in re.finditer('△', pre_div_get_text)]
+                if len(pre_div_text_quanquan):
+                    pre_div_get_text = pre_div_get_text.replace('○', '')
+                elif len(pre_div_text_sanjiao):
+                    pre_div_get_text = pre_div_get_text.replace('△', '')
+                old_year = pre_div_get_text[0:2]
+                old_year_first_match = [m.start() for m in re.finditer(old_year[0], '甲乙丙丁戊己庚辛壬癸')]
+                if len(old_year_first_match):
+                    return old_year
+                else:
+
+                    match = [m.start() for m in re.finditer('月', pre_div_get_text)]
+                    if len(match):
+                        p = match[0]
+                        old_year = pre_div_get_text[p + 1:p + 3]
+                        year_match = [m.start() for m in re.finditer(old_year[0], '甲乙丙丁戊己庚辛壬癸')]
+                        if len(year_match):
+                            return old_year
+                        else:
+                            return ''
+
+            else:
+                previous_d = pre_pre_div
+
 fonts = soup.findAll('font', {'class': "hit"})
 font_numbers = len(fonts)
 
@@ -110,7 +151,26 @@ while k < font_numbers:
                             div_get_text = div_get_text.replace('○', '')
                         elif len(div_text_sanjiao):
                             div_get_text = div_get_text.replace('△', '')
-                        contents.append(div_get_text)
+                        ganzhi_year = find_old_year(div)
+                        # 查找是否當前div的前兩個字是幹支年,如果是,則不變,否則查找朔,如果有 則取前面兩個字,否則什麼都不變
+                        current_div_year = div_get_text[0:2]
+
+                        first_match = [m.start() for m in re.finditer(current_div_year[0], '甲乙丙丁戊己庚辛壬癸')]
+                        if len(first_match):
+                            pass
+                        else:
+                            if len(div_get_text) <= 20:
+                                pass
+                            else:
+                                yue_match = [m.start() for m in re.finditer('月', div_get_text[0:20])]
+                                if len(yue_match):
+                                    position = yue_match[0]
+                                    possible_old_year = div_get_text[position+1:position+3]
+                                    old_year_match = [m.start() for m in re.finditer(possible_old_year[0], '甲乙丙丁戊己庚辛壬癸')]
+                                    if len(old_year_match):
+                                        div_get_text = possible_old_year+div_get_text[position+3:]
+
+                        contents.append(ganzhi_year+div_get_text)
                         K_number.append(k)
 
                     else:
@@ -169,4 +229,4 @@ for match in matches:
             file_name += sub_match
 
 workbook.save('./Excel_%s.xls' % file_name)
-
+page.close()
