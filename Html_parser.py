@@ -214,9 +214,9 @@ for i in range(sheet_length):
     heads_head.append(heads_all_contents[i][0:heads_match_results[2]])
     heads_contents.append(heads_all_contents[i][(heads_match_results[2] + 1):])
     worksheet.write(i, 0, i+1)
-    worksheet.write(i, 1, heads_head[i])
-    worksheet.write(i, 2, heads_contents[i])
-    worksheet.write(i, 3, contents[i])
+    # worksheet.write(i, 1, heads_head[i])
+    worksheet.write(i, 1, heads_contents[i])
+    worksheet.write(i, 2, contents[i])
 file_name = 'Workbook'
 for match in matches:
     if len(match) == 1:
