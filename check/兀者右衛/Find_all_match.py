@@ -19,7 +19,6 @@ page.close()
 
 
 
-
 # bug1: 如317所示，陕西和番僧所在的div中有一个table，所以不能被提取。
 # bug2: 校准的内容在span里面，能不能把span去掉，然后将span的内容放到div里面？
 # bug3: see number 39. 陕西被table的页数分开了。 能不能先去掉所有的table class= “page2” 然后将table所在位置的上一个div和下一个div合并成一个

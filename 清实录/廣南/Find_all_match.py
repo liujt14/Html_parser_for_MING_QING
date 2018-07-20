@@ -5,7 +5,7 @@ page = codecs.open("./明實錄、朝鮮王朝實錄、清實錄資料庫合作�
 # 找到所有的font class=‘hit， 找到所有非重復的值.
 # 能利用编码方式的差异自动生成matches变量吗?
 soup = BeautifulSoup(page, "lxml")
-fonts = soup.findAll('font', {'class': "hit0"})
+fonts = soup.findAll('font', {'class': "hit"})
 print("length of search words is: %d" % len(fonts))
 fonts_set = {m.string for m in fonts if m.string is not None}
 fonts_list = list(fonts_set)

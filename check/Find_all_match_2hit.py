@@ -6,13 +6,16 @@ page = codecs.open("./明實錄、朝鮮王朝實錄、清實錄資料庫合作�
 # 能利用编码方式的差异自动生成matches变量吗?
 soup = BeautifulSoup(page, "lxml")
 fonts = soup.findAll('font', {'class': "hit0"})
-print("length of search words is: %d" % len(fonts))
+fonts_2 = soup.findAll('font', {'class': 'hit1'})
+print("length of search words is: %d" % (len(fonts)+len(fonts_2)))
 fonts_set = {m.string for m in fonts if m.string is not None}
+fonts_2set = {m.string for m in fonts_2 if m.string is not None}
 fonts_list = list(fonts_set)
+fonts_2list = list(fonts_2set)
 print("search words list is : ")
 print(fonts_list)
+print(fonts_2list)
 page.close()
-
 
 
 

@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 import codecs
-page = codecs.open("./明實錄、朝鮮王朝實錄、清實錄資料庫合作建置計畫.html", 'r', 'utf-8')
+page = codecs.open("./1", 'r', 'utf-8')
 
 # 找到所有的font class=‘hit， 找到所有非重復的值.
 # 能利用编码方式的差异自动生成matches变量吗?
@@ -12,7 +12,6 @@ fonts_list = list(fonts_set)
 print("search words list is : ")
 print(fonts_list)
 page.close()
-
 
 
 
