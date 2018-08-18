@@ -15,7 +15,7 @@ heads_all_contents = []
 heads_head = []
 heads_contents = []
 K_number = []
-matches = [['建州'], ['女直']]
+matches = [['貴州'], ['土官']]
 
 
 def remove_tables_between_divs(table):
@@ -220,6 +220,9 @@ for i in range(sheet_length):
     # worksheet.write(i, 1, heads_head[i])
     worksheet.write(i, 1, heads_contents[i])
     worksheet.write(i, 2, contents[i])
+    ci_match_results = [m.start() for m in re.finditer('賜', contents[i])]
+    if bool(len(ci_match_results)):
+        worksheet.write(i, 3, 'bestow')
 file_name = 'Workbook'
 for match in matches:
     if len(match) == 1:
